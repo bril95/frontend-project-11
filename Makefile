@@ -7,5 +7,8 @@ publish:
 lint:
 	npx eslint .
 
-webpack:
+build:
+	NODE_ENV=production npx webpack
+
+develop:
 	npx webpack serve
