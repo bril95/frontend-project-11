@@ -7,8 +7,5 @@ publish:
 lint:
 	npx eslint .
 
-# test:
-# 	npx jest
-
-# test-coverage:
-# 	npx jest --coverage
+webpack:
+	npx webpack serve
