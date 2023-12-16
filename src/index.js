@@ -1,4 +1,1 @@
-import "./style.css";
-
-console.log('hello!');
-console.log('hello!');
+import 'bootstrap/dist/css/bootstrap.min.css';
