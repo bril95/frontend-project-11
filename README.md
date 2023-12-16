@@ -1,6 +1,6 @@
 # RSS Reader
 
-[Link to the project](frontend-project-11-beryl-six.vercel.app).
+[Link to the project](https://frontend-project-11-beryl-six.vercel.app/)
 
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/bril95/frontend-project-11/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/bril95/frontend-project-11/actions)
