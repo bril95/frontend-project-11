@@ -1,4 +1,4 @@
-const initView = (watchedState, path, current) => {
+const initView = (watchedState) => {
   const inputUrl = document.querySelector('#url-input');
   const feedback = document.querySelector('.feedback');
   // const posts = document.querySelector('.posts');
@@ -13,7 +13,7 @@ const initView = (watchedState, path, current) => {
       }
       feedback.classList.remove('text-danger');
       feedback.classList.add('text-success');
-      feedback.textContent = 'RSS успешно загружен';
+      feedback.textContent = watchedState.i18n.t('correctLink');
       break;
     case 'error':
       if (inputUrl.classList.contains('text-success')) {
@@ -21,7 +21,7 @@ const initView = (watchedState, path, current) => {
       }
       feedback.classList.add('text-danger');
       inputUrl.classList.add('is-invalid');
-      feedback.textContent = watchedState.form.errors;
+      feedback.textContent = watchedState.i18n.t(watchedState.form.errors);
       break;
     default:
       throw new Error(`Unknown process state: ${watchedState.processState}`);
