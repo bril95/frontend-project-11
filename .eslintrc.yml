@@ -1,4 +1,5 @@
 env:
+  browser: true
   node: true
   es2021: true
 extends: airbnb-base
@@ -15,4 +16,6 @@ rules:
     - js: always
     no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
     quotes: 'off'
-  # Други
+    arrow-body-style: ["error", "always"]
+    no-inline-comments: 0
+    no-trailing-spaces: ["error", { "ignoreComments": true }]
