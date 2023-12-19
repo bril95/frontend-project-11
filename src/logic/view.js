@@ -1,4 +1,4 @@
-const initView = (watchedState, path, current) => {
+const initView = (watchedState) => {
   const inputUrl = document.querySelector('#url-input');
   const feedback = document.querySelector('.feedback');
   switch (watchedState.processState) {
