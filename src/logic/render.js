@@ -1,8 +1,19 @@
 import onChange from 'on-change';
+import i18next from 'i18next';
 import validate from './validate.js';
 import initView from './view.js';
+import ru from '../locales/ru.js';
 
 const app = () => {
+  const i18nextInstance = i18next.createInstance();
+  i18nextInstance.init({
+    lng: 'en',
+    debug: true,
+    resources: {
+      ru,
+    },
+  });
+
   const initialState = {
     processState: 'filling',
     form: {

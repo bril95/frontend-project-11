@@ -1,12 +1,17 @@
 import * as yup from 'yup';
+import ru from '../locales/ru.js';
+
+yup.setLocale({
+  string: {
+    url: ru.translation.wrongLink,
+  },
+});
 
 const validate = (field, links) => {
   const schema = yup.string()
-    .url('Ссылка должна быть валидным URL')
-    .test('is-unique', 'RSS уже существует', (value) => {
-      if (!links.includes(value)) {
-        return true;
-      } return false;
+    .url()
+    .test('isUnique', ru.translation.doubleAdd, (value) => {
+      return !links.includes(value);
     });
 
   return schema.validate(field, { abortEarly: false })
