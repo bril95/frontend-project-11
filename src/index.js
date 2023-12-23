@@ -1,4 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import app from './logic/render.js';
+import app from './src/app.js';
 
 app();

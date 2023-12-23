@@ -1,11 +1,9 @@
 import onChange from 'on-change';
-import i18next from 'i18next';
-import ru from '../locales/ru.js';
-import validate from './validate.js';
+import validate from './utilities/validate.js';
 import initView from './view.js';
-import parsing from './parsing.js';
+import parsing from './utilities/parsing.js';
 
-const app = (i18nextInstance) => {
+export default (i18nextInstance) => {
   const initialState = {
     processState: 'filling',
     form: {
@@ -43,6 +41,14 @@ const app = (i18nextInstance) => {
       })
       .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
+        // const buttons = document.querySelectorAll('.btn-sm');
+        // console.log(buttons)
+        // buttons.forEach((button) => {
+        //   button.addEventListener('click', (event) => {
+        //     event.preventDefault();
+        //     console.log('f')
+        //   });
+        // })
         form.reset();
         form.focus();
       })
@@ -53,33 +59,4 @@ const app = (i18nextInstance) => {
         watchedState.fieldUi.redArea = true;
       });
   });
-};
-export default () => {
-  const i18nextInstance = i18next.createInstance();
-
-  const initializeI18next = () => {
-    return new Promise((resolve, reject) => {
-      i18nextInstance.init({
-        lng: 'ru',
-        debug: true,
-        resources: {
-          ru,
-        },
-      }, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(i18nextInstance);
-        }
-      });
-    });
-  };
-
-  initializeI18next()
-    .then(() => {
-      app(i18nextInstance);
-    })
-    .catch((error) => {
-      throw error(error);
-    });
 };
