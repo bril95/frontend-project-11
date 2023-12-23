@@ -1,8 +1,9 @@
 import onChange from 'on-change';
 import i18next from 'i18next';
+import ru from '../locales/ru.js';
 import validate from './validate.js';
 import initView from './view.js';
-import ru from '../locales/ru.js';
+import parsing from './parsing.js';
 
 const app = (i18nextInstance) => {
   const initialState = {
@@ -15,6 +16,7 @@ const app = (i18nextInstance) => {
     fieldUi: {
       redArea: false,
     },
+    AllRSS: [],
     i18n: i18nextInstance,
   };
 
@@ -37,6 +39,10 @@ const app = (i18nextInstance) => {
         watchedState.form.errors = null;
         watchedState.form.valid = true;
         watchedState.fieldUi.redArea = false;
+        return parsing(currentUrl);
+      })
+      .then((currentParsenedUrl) => {
+        watchedState.AllRSS.push(currentParsenedUrl);
         form.reset();
         form.focus();
       })

@@ -5,5 +5,6 @@ export default {
     correctLink: 'RSS успешно загружен',
     feeds: 'Фиды',
     posts: 'Посты',
+    buttonView: 'Просмотр',
   },
 };
