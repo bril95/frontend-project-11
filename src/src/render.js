@@ -10,6 +10,7 @@ export default (i18nextInstance) => {
       valid: true,
       errors: null,
       url: '',
+      alert: false,
     },
     fieldUi: {
       redArea: false,
@@ -41,14 +42,20 @@ export default (i18nextInstance) => {
       })
       .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
-        // const buttons = document.querySelectorAll('.btn-sm');
-        // console.log(buttons)
-        // buttons.forEach((button) => {
-        //   button.addEventListener('click', (event) => {
-        //     event.preventDefault();
-        //     console.log('f')
-        //   });
-        // })
+        const buttons = document.querySelectorAll('.btn-sm');
+        buttons.forEach((button) => {
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            watchedState.form.alert = true;
+          });
+        });
+        const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+        closeButtons.forEach((button) => {
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
+            watchedState.form.alert = false;
+          });
+        });
         form.reset();
         form.focus();
       })

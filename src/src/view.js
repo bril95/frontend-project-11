@@ -25,6 +25,30 @@ const initView = (watchedState, path, current) => {
         addNewRSSFeed(lastAddRss);
         addNewRSSPosts(lastAddRss, watchedState);
       }
+      if (path === 'form.alert') {
+        const body = document.querySelector('body');
+        const modal = document.querySelector('.modal');
+        const modalTitle = document.querySelector('.modal-title');
+        const modalBody = document.querySelector('.modal-body');
+        const modalFooterHref = document.querySelector('.modal-footer > a');
+        if (!body.classList.contains('modal-open')) {
+          body.classList.add('modal-open');
+          body.style.overflow = 'hidden';
+          body.style.paddingRight = '15px';
+          modal.classList.add('show');
+          modal.style.display = 'block';
+          modal.setAttribute('aria-modal', 'true');
+          modalTitle.textContent = 'заголовок статьи';
+          modalBody.textContent = 'текст статьи';
+          modalFooterHref.href = 'https://lorem-rss.hexlet.app/feed?unit=day';
+        } else {
+          body.classList.remove('modal-open');
+          body.style = '';
+          modal.classList.remove('show');
+          modal.style.display = 'none';
+          modal.removeAttribute('aria-modal');
+        }
+      }
       break;
     case 'error':
       if (inputUrl.classList.contains('text-success')) {
