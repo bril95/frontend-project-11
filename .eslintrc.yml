@@ -16,7 +16,6 @@ rules:
     - js: always
     no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
     quotes: 'off'
-    arrow-body-style: ["error", "always"]
     no-inline-comments: 0
     no-trailing-spaces: ["error", { "ignoreComments": true }]
     no-param-reassign: ["error", { "props": false }]
