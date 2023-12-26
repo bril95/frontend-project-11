@@ -2,6 +2,7 @@ import onChange from 'on-change';
 import validate from './utilities/validate.js';
 import initView from './view.js';
 import parsing from './utilities/parsing.js';
+import findObject from './utilities/findObj.js';
 
 export default (i18nextInstance) => {
   const initialState = {
@@ -16,6 +17,7 @@ export default (i18nextInstance) => {
       redArea: false,
     },
     AllRSS: [],
+    currentElement: '',
     i18n: i18nextInstance,
   };
 
@@ -41,11 +43,17 @@ export default (i18nextInstance) => {
         return parsing(currentUrl);
       })
       .then((currentParsenedUrl) => {
+      // на вход приходит объект
         watchedState.AllRSS.push(currentParsenedUrl);
+        // массив объектов
         const buttons = document.querySelectorAll('.btn-sm');
         buttons.forEach((button) => {
           button.addEventListener('click', (event) => {
             event.preventDefault();
+            const currentID = button.dataset.id;
+            const currentInfo = findObject(initialState.AllRSS, currentID);
+            watchedState.processState = 'openPost';
+            watchedState.currentElement = currentInfo;
             watchedState.form.alert = true;
           });
         });

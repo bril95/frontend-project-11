@@ -1,6 +1,3 @@
-const postsClass = document.querySelector('.posts');
-const feedsClass = document.querySelector('.feeds');
-
 const createHead = (title, watchedState) => {
   const card = document.createElement('div');
   card.classList.add('card', 'border-0');
@@ -18,7 +15,8 @@ const createHead = (title, watchedState) => {
 };
 
 const addNewRSSFeed = (rss) => {
-  const ul = feedsClass.querySelector('ul');
+  const feeds = document.querySelector('.feeds');
+  const ul = feeds.querySelector('ul');
   const li = document.createElement('li');
   li.classList.add('list-group-item', 'border-0', 'border-end-0');
   const h3 = document.createElement('h3');
@@ -32,21 +30,22 @@ const addNewRSSFeed = (rss) => {
 };
 
 const addNewRSSPosts = (rss, watchedState) => {
-  const ul = postsClass.querySelector('ul');
+  const posts = document.querySelector('.posts');
+  const ul = posts.querySelector('ul');
   rss.items.forEach((item) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const a = document.createElement('a');
     a.href = item.itemLink;
     a.classList.add('fw-bold');
-    a.setAttribute('data-id', '2');
+    a.setAttribute('data-id', item.itemId);
     a.target = '_blank';
     a.rel = 'noopener noreferrer';
     a.textContent = item.itemTitle;
     const button = document.createElement('button');
     button.type = 'button';
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-    button.setAttribute('data-id', '25');
+    button.setAttribute('data-id', item.itemId);
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#modal');
     button.textContent = watchedState.i18n.t('buttonView');
@@ -56,4 +55,33 @@ const addNewRSSPosts = (rss, watchedState) => {
   });
 };
 
-export { createHead, addNewRSSFeed, addNewRSSPosts };
+const viewing = (watchedState, path) => {
+  const body = document.querySelector('body');
+  const modal = document.querySelector('.modal');
+  const modalTitle = document.querySelector('.modal-title');
+  const modalBody = document.querySelector('.modal-body');
+  const modalFooterHref = document.querySelector('.modal-footer > a');
+  if (path === 'form.alert') {
+    if (!body.classList.contains('modal-open')) {
+      body.classList.add('modal-open');
+      body.style.overflow = 'hidden';
+      body.style.paddingRight = '15px';
+      modal.classList.add('show');
+      modal.style.display = 'block';
+      modal.setAttribute('aria-modal', 'true');
+      modalTitle.textContent = watchedState.currentElement.itemTitle;
+      modalBody.textContent = watchedState.currentElement.itemDescription;
+      modalFooterHref.href = watchedState.currentElement.itemLink;
+    } else {
+      body.classList.remove('modal-open');
+      body.style = '';
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      modal.removeAttribute('aria-modal');
+    }
+  }
+};
+
+export {
+  createHead, addNewRSSFeed, addNewRSSPosts, viewing,
+};

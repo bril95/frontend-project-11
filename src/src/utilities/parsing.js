@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _ from 'lodash';
 
 const parsing = (link) => {
   return axios({
@@ -19,10 +20,13 @@ const parsing = (link) => {
       const objFromLink = { title, description, items: [] };
       const items = xmlDoc.querySelectorAll('item');
       items.forEach((item) => {
+        const itemId = _.uniqueId();
         const itemTitle = item.querySelector('title').textContent;
         const itemDescription = item.querySelector('description').textContent;
         const itemLink = item.querySelector('link').textContent;
-        const itemObj = { itemTitle, itemDescription, itemLink };
+        const itemObj = {
+          itemId, itemTitle, itemDescription, itemLink,
+        };
         objFromLink.items.push(itemObj);
       });
       return objFromLink;
