@@ -33,14 +33,15 @@ export default (i18nextInstance) => {
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url');
     validate(currentUrl, links)
-      .then((url) => {
-        links.push(url);
+      .then((url) => parsing(url))
+      .then((currentParsenedUrl) => {
+        links.push(currentParsenedUrl);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
         watchedState.form.errors = null;
         watchedState.form.valid = true;
         watchedState.fieldUi.redArea = false;
-        return parsing(currentUrl);
+        return currentParsenedUrl;
       })
       .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
