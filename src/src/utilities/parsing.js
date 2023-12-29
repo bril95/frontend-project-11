@@ -24,7 +24,9 @@ const parsing = (link) => {
         }
         const title = titleElement.textContent;
         const description = xmlDoc.querySelector('description').textContent;
-        const objFromLink = { title, description, items: [] };
+        const objFromLink = {
+          title, description, items: [], link,
+        };
         const items = xmlDoc.querySelectorAll('item');
         items.forEach((item) => {
           const itemId = _.uniqueId();

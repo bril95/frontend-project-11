@@ -33,12 +33,9 @@ export default (i18nextInstance) => {
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url');
     validate(currentUrl, links)
-      .then((url) => {
-        links.push(url);
-        return url;
-      })
       .then((url) => parsing(url))
       .then((currentParsenedUrl) => {
+        links.push(currentParsenedUrl.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
         watchedState.form.state = 'correctLink';
