@@ -6,7 +6,7 @@ export default () => {
   const i18nextInstance = i18next.createInstance();
 
   const initializeI18next = () => {
-    return new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       i18nextInstance.init({
         lng: 'ru',
         debug: true,
@@ -21,6 +21,7 @@ export default () => {
         }
       });
     });
+    return promise;
   };
 
   initializeI18next()

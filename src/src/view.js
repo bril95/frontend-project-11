@@ -17,7 +17,7 @@ const initView = (watchedState, path, current) => {
       }
       feedback.classList.remove('text-danger');
       feedback.classList.add('text-success');
-      feedback.textContent = watchedState.i18n.t('correctLink');
+      feedback.textContent = watchedState.i18n.t('correctLink'); // переместить в рендер, тут должен выводить само слово оттуда
       if (posts.childElementCount === 0) {
         posts.append(createHead('posts', watchedState));
         feeds.append(createHead('feeds', watchedState));
@@ -29,6 +29,10 @@ const initView = (watchedState, path, current) => {
       }
       break;
     case 'openPost': {
+      viewing(watchedState, path);
+      break;
+    }
+    case 'closePost': {
       viewing(watchedState, path);
       break;
     }

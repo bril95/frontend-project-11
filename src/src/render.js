@@ -43,9 +43,7 @@ export default (i18nextInstance) => {
         return parsing(currentUrl);
       })
       .then((currentParsenedUrl) => {
-      // на вход приходит объект
         watchedState.AllRSS.push(currentParsenedUrl);
-        // массив объектов
         const buttons = document.querySelectorAll('.btn-sm');
         buttons.forEach((button) => {
           button.addEventListener('click', (event) => {
@@ -61,6 +59,7 @@ export default (i18nextInstance) => {
         closeButtons.forEach((button) => {
           button.addEventListener('click', (event) => {
             event.preventDefault();
+            watchedState.processState = 'closePost';
             watchedState.form.alert = false;
           });
         });

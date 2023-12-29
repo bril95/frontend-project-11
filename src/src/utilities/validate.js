@@ -10,9 +10,7 @@ const validate = (field, links) => {
     });
 
   return schema.validate(field, { abortEarly: false })
-    .then(() => {
-      return field;
-    })
+    .then(() => field)
     .catch((errors) => {
       throw errors;
     });

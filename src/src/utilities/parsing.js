@@ -2,7 +2,7 @@ import axios from 'axios';
 import _ from 'lodash';
 
 const parsing = (link) => {
-  return axios({
+  const request = axios({
     method: 'get',
     url: `//allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
   })
@@ -34,5 +34,6 @@ const parsing = (link) => {
     .catch((error) => {
       console.error('Error:', error);
     });
+  return request;
 };
 export default parsing;

@@ -61,6 +61,8 @@ const viewing = (watchedState, path) => {
   const modalTitle = document.querySelector('.modal-title');
   const modalBody = document.querySelector('.modal-body');
   const modalFooterHref = document.querySelector('.modal-footer > a');
+  const id = watchedState.currentElement.itemId;
+  const currentLi = document.querySelector(`a[data-id="${id}"]`);
   if (path === 'form.alert') {
     if (!body.classList.contains('modal-open')) {
       body.classList.add('modal-open');
@@ -69,6 +71,11 @@ const viewing = (watchedState, path) => {
       modal.classList.add('show');
       modal.style.display = 'block';
       modal.setAttribute('aria-modal', 'true');
+      modal.removeAttribute('aria-hidden');
+      modal.setAttribute('role', 'dialog');
+      currentLi.classList.remove('fw-bold');
+      currentLi.classList.add('fw-normal');
+      currentLi.classList.add('link-secondary');
       modalTitle.textContent = watchedState.currentElement.itemTitle;
       modalBody.textContent = watchedState.currentElement.itemDescription;
       modalFooterHref.href = watchedState.currentElement.itemLink;
@@ -77,7 +84,9 @@ const viewing = (watchedState, path) => {
       body.style = '';
       modal.classList.remove('show');
       modal.style.display = 'none';
+      modal.setAttribute('aria-hidden', 'true');
       modal.removeAttribute('aria-modal');
+      modal.removeAttribute('role');
     }
   }
 };
