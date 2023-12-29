@@ -9,7 +9,7 @@ export default (i18nextInstance) => {
     processState: 'filling',
     form: {
       valid: true,
-      errors: null,
+      state: null,
       url: '',
       alert: false,
     },
@@ -38,7 +38,7 @@ export default (i18nextInstance) => {
         links.push(currentParsenedUrl);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
-        watchedState.form.errors = null;
+        watchedState.form.state = 'correctLink';
         watchedState.form.valid = true;
         watchedState.fieldUi.redArea = false;
         return currentParsenedUrl;
@@ -69,7 +69,7 @@ export default (i18nextInstance) => {
       })
       .catch((errors) => {
         watchedState.processState = 'error';
-        watchedState.form.errors = errors.message;
+        watchedState.form.state = errors.message;
         watchedState.form.valid = false;
         watchedState.fieldUi.redArea = true;
       });

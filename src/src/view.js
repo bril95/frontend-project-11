@@ -17,7 +17,7 @@ const initView = (watchedState, path, current) => {
       }
       feedback.classList.remove('text-danger');
       feedback.classList.add('text-success');
-      feedback.textContent = watchedState.i18n.t('correctLink'); // переместить в рендер, тут должен выводить само слово оттуда
+      feedback.textContent = watchedState.i18n.t(watchedState.form.state);
       if (posts.childElementCount === 0) {
         posts.append(createHead('posts', watchedState));
         feeds.append(createHead('feeds', watchedState));
@@ -42,7 +42,7 @@ const initView = (watchedState, path, current) => {
       }
       feedback.classList.add('text-danger');
       inputUrl.classList.add('is-invalid');
-      feedback.textContent = watchedState.i18n.t(watchedState.form.errors);
+      feedback.textContent = watchedState.i18n.t(watchedState.form.state);
       break;
     default:
       throw new Error(`Unknown process state: ${watchedState.processState}`);
