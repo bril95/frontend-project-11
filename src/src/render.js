@@ -33,9 +33,12 @@ export default (i18nextInstance) => {
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url');
     validate(currentUrl, links)
+      .then((url) => {
+        links.push(url);
+        return url;
+      })
       .then((url) => parsing(url))
       .then((currentParsenedUrl) => {
-        links.push(currentParsenedUrl);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
         watchedState.form.state = 'correctLink';
@@ -63,6 +66,10 @@ export default (i18nextInstance) => {
             watchedState.processState = 'openPost';
             watchedState.currentElement = currentInfo;
             watchedState.form.alert = true;
+            const modal = document.getElementById('modal');
+            if (modal) {
+              modal.focus();
+            }
           });
         });
         const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
@@ -73,9 +80,14 @@ export default (i18nextInstance) => {
             watchedState.form.alert = false;
           });
         });
-        form.reset();
-        form.focus();
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            watchedState.processState = 'closePost';
+            watchedState.form.alert = false;
+          }
+        });
       })
+      .then(() => form.reset())
       .catch((errors) => {
         watchedState.processState = 'error';
         watchedState.form.state = errors.message;
