@@ -65,6 +65,9 @@ const viewingPost = (watchedState, path) => {
   const currentLi = document.querySelector(`a[data-id="${id}"]`);
   if (path === 'form.alert') {
     if (!body.classList.contains('modal-open')) {
+      const div = document.createElement('div');
+      div.classList.add('modal-backdrop', 'fade', 'show');
+      body.append(div);
       body.classList.add('modal-open');
       body.style.overflow = 'hidden';
       body.style.paddingRight = '15px';
@@ -80,6 +83,8 @@ const viewingPost = (watchedState, path) => {
       modalBody.textContent = watchedState.currentElement.itemDescription;
       modalFooterHref.href = watchedState.currentElement.itemLink;
     } else {
+      const div = body.querySelector('.modal-backdrop');
+      div.remove();
       body.classList.remove('modal-open');
       body.style = '';
       modal.classList.remove('show');
