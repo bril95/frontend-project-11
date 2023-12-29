@@ -45,6 +45,15 @@ export default (i18nextInstance) => {
       })
       .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
+        const linksA = document.querySelectorAll('li > a');
+        linksA.forEach((link) => {
+          link.addEventListener('click', () => {
+            const currentID = link.dataset.id;
+            const currentInfo = findObject(initialState.AllRSS, currentID);
+            watchedState.currentElement = currentInfo;
+            watchedState.processState = 'openLink';
+          });
+        });
         const buttons = document.querySelectorAll('.btn-sm');
         buttons.forEach((button) => {
           button.addEventListener('click', (event) => {

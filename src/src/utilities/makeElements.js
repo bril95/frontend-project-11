@@ -55,7 +55,7 @@ const addNewRSSPosts = (rss, watchedState) => {
   });
 };
 
-const viewing = (watchedState, path) => {
+const viewingPost = (watchedState, path) => {
   const body = document.querySelector('body');
   const modal = document.querySelector('.modal');
   const modalTitle = document.querySelector('.modal-title');
@@ -91,6 +91,13 @@ const viewing = (watchedState, path) => {
   }
 };
 
+const viewingLink = (watchedState) => {
+  const id = watchedState.currentElement.itemId;
+  const currentLi = document.querySelector(`a[data-id="${id}"]`);
+  currentLi.classList.add('link-secondary');
+  currentLi.classList.remove('fw-bold');
+};
+
 export {
-  createHead, addNewRSSFeed, addNewRSSPosts, viewing,
+  createHead, addNewRSSFeed, addNewRSSPosts, viewingPost, viewingLink,
 };

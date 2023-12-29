@@ -1,5 +1,5 @@
 import {
-  createHead, addNewRSSFeed, addNewRSSPosts, viewing,
+  createHead, addNewRSSFeed, addNewRSSPosts, viewingPost, viewingLink,
 } from './utilities/makeElements.js';
 
 const initView = (watchedState, path, current) => {
@@ -29,11 +29,15 @@ const initView = (watchedState, path, current) => {
       }
       break;
     case 'openPost': {
-      viewing(watchedState, path);
+      viewingPost(watchedState, path);
       break;
     }
     case 'closePost': {
-      viewing(watchedState, path);
+      viewingPost(watchedState, path);
+      break;
+    }
+    case 'openLink': {
+      viewingLink(watchedState);
       break;
     }
     case 'error':
