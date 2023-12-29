@@ -6,21 +6,14 @@ export default () => {
   const i18nextInstance = i18next.createInstance();
 
   const initializeI18next = () => {
-    const promise = new Promise((resolve, reject) => {
-      i18nextInstance.init({
-        lng: 'ru',
-        debug: true,
-        resources: {
-          ru,
-        },
-      }, (err) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(i18nextInstance);
-        }
-      });
-    });
+    const promise = i18nextInstance.init({
+      lng: 'ru',
+      debug: true,
+      resources: {
+        ru,
+      },
+    })
+      .then(() => i18nextInstance);
     return promise;
   };
 
@@ -29,6 +22,6 @@ export default () => {
       render(i18nextInstance);
     })
     .catch((error) => {
-      throw error(error);
+      throw error;
     });
 };
