@@ -1,32 +1,8 @@
-import onChange from 'on-change';
 import validate from './utilities/validate.js';
-import initView from './view.js';
 import parsing from './utilities/parsing.js';
 import findObject from './utilities/findObj.js';
 
-export default (i18nextInstance) => {
-  const initialState = {
-    processState: 'filling',
-    form: {
-      valid: true,
-      state: null,
-      url: '',
-      alert: false,
-    },
-    fieldUi: {
-      redArea: false,
-    },
-    AllRSS: [],
-    currentElement: '',
-    i18n: i18nextInstance,
-  };
-
-  const links = [];
-
-  const watchedState = onChange(initialState, (path, current) => {
-    initView(watchedState, path, current);
-  });
-
+export default (watchedState, links) => {
   const form = document.querySelector('form');
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -49,7 +25,7 @@ export default (i18nextInstance) => {
         linksA.forEach((link) => {
           link.addEventListener('click', () => {
             const currentID = link.dataset.id;
-            const currentInfo = findObject(initialState.AllRSS, currentID);
+            const currentInfo = findObject(watchedState.AllRSS, currentID);
             watchedState.currentElement = currentInfo;
             watchedState.processState = 'openLink';
           });
@@ -59,7 +35,7 @@ export default (i18nextInstance) => {
           button.addEventListener('click', (event) => {
             event.preventDefault();
             const currentID = button.dataset.id;
-            const currentInfo = findObject(initialState.AllRSS, currentID);
+            const currentInfo = findObject(watchedState.AllRSS, currentID);
             watchedState.processState = 'openPost';
             watchedState.currentElement = currentInfo;
             watchedState.form.alert = true;

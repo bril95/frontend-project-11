@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import ru from '../locales/ru.js';
-import render from './render.js';
+import state from './state.js';
 
 export default () => {
   const i18nextInstance = i18next.createInstance();
@@ -19,7 +19,7 @@ export default () => {
 
   initializeI18next()
     .then(() => {
-      render(i18nextInstance);
+      state(i18nextInstance);
     })
     .catch((error) => {
       throw error;
