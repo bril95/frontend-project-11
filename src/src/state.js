@@ -26,9 +26,10 @@ export default (i18nextInstance) => {
     initView(watchedState, path, current);
 
     const checkAndUpdate = () => {
-      checkNewPosts(watchedState)
-        .then(() => {
-          console.log('checked'); // тут должен вызывать функцию проверки
+      checkNewPosts(initialState)
+        .then((newPosts) => {
+          console.log(newPosts);
+          initialState.AllRSS = newPosts;
           setTimeout(checkAndUpdate, 5000);
         })
         .catch((error) => {

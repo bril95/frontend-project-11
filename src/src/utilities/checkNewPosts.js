@@ -2,26 +2,39 @@ import parsing from "./parsing.js";
 
 const compareElem = (prev, curr) => {
   const generalArray = [...prev];
-  const allCurrId = generalArray.map((elem) => elem.itemId);
-  curr.forEach((elem) => {
-    if (!allCurrId.includes(elem.itemId)) {
-      generalArray.push(elem);
-    }
+  // console.log(generalArray)
+  const allCurrId = generalArray.map((elem) => elem.itemTitle);
+
+  const promises = curr.map((elem) => {
+    const promise = new Promise((resolve) => {
+      if (!allCurrId.includes(elem.itemTitle)) {
+        generalArray.push(elem);
+      }
+      resolve();
+    });
+    return promise;
   });
-  return generalArray;
+
+  return Promise.all(promises).then(() => generalArray);
 };
 
 export default (arrayOfObjects) => {
   const promises = arrayOfObjects.AllRSS.map((element) => {
+    // console.log(element.items);
     const currentLink = element.link;
     return parsing(currentLink)
       .then((currParsObj) => {
-        element.items = compareElem(element.items, currParsObj.items);
+        const results = compareElem(element.items, currParsObj.items)
+          .then((compare) => {
+            // console.log(compare)
+            element.items = compare;
+          });
+        return results;
       })
       .catch((error) => {
         console.error(`Error parsing link: ${currentLink}`, error);
       });
   });
 
-  return Promise.all(promises).then(() => arrayOfObjects);
+  return Promise.all(promises).then(() => arrayOfObjects.AllRSS);
 };
