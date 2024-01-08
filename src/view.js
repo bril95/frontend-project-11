@@ -13,27 +13,7 @@ const initView = (watchedState, path, current) => {
   switch (watchedState.processState) {
     case 'update':
       ul.textContent = '';
-      allPost.forEach((item) => {
-        const li = document.createElement('li');
-        li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
-        const a = document.createElement('a');
-        a.href = item.itemLink;
-        a.classList.add('fw-bold');
-        a.setAttribute('data-id', item.itemId);
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.textContent = item.itemTitle;
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-        button.setAttribute('data-id', item.itemId);
-        button.setAttribute('data-bs-toggle', 'modal');
-        button.setAttribute('data-bs-target', '#modal');
-        button.textContent = watchedState.i18n.t('buttonView');
-        li.appendChild(a);
-        li.appendChild(button);
-        ul.appendChild(li);
-      });
+      addNewRSSPosts(allPost, watchedState);
       break;
     case 'waiting':
       break;
@@ -51,7 +31,7 @@ const initView = (watchedState, path, current) => {
       if (path === 'AllRSS') {
         const lastAddRss = current[current.length - 1];
         addNewRSSFeed(lastAddRss);
-        addNewRSSPosts(lastAddRss, watchedState);
+        addNewRSSPosts(lastAddRss.items, watchedState);
       }
       break;
     case 'openPost': {

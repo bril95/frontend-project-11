@@ -32,12 +32,16 @@ const addNewRSSFeed = (rss) => {
 const addNewRSSPosts = (rss, watchedState) => {
   const posts = document.querySelector('.posts');
   const ul = posts.querySelector('ul');
-  rss.items.forEach((item) => {
+  rss.forEach((item) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
     const a = document.createElement('a');
     a.href = item.itemLink;
-    a.classList.add('fw-bold');
+    if (watchedState.openedPosts.includes(item.itemId)) {
+      a.classList.add('link-secondary');
+    } else {
+      a.classList.add('fw-bold');
+    }
     a.setAttribute('data-id', item.itemId);
     a.target = '_blank';
     a.rel = 'noopener noreferrer';

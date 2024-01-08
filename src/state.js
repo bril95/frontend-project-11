@@ -1,7 +1,6 @@
 import onChange from 'on-change';
 import initView from './view.js';
 import render from './render.js';
-import checkNewPosts from './utilities/checkNewPosts.js';
 
 export default (i18nextInstance) => {
   const initialState = {
@@ -17,6 +16,7 @@ export default (i18nextInstance) => {
     },
     AllRSS: [],
     AllPosts: [],
+    openedPosts: [],
     currentElement: '',
     i18n: i18nextInstance,
   };
@@ -25,26 +25,6 @@ export default (i18nextInstance) => {
 
   const watchedState = onChange(initialState, (path, current) => {
     initView(watchedState, path, current);
-
-    const checkAndUpdate = () => {
-      checkNewPosts(initialState)
-        .then((newPosts) => {
-          watchedState.AllPosts.unshift(newPosts);
-          // console.log(initialState.AllPosts.flat());
-          console.log(initialState.processState);
-          watchedState.processState = 'update';
-          watchedState.processState = 'waiting';
-          setTimeout(checkAndUpdate, 5000);
-        })
-        .catch((error) => {
-          console.error(error);
-          setTimeout(checkAndUpdate, 5000);
-        });
-    };
-
-    if (path === 'AllRSS') {
-      checkAndUpdate();
-    }
   });
 
   render(watchedState, links);
