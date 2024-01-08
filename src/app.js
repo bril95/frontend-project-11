@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import ru from '../locales/ru.js';
+import ru from './locales/ru.js';
 import state from './state.js';
 
 export default () => {

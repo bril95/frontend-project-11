@@ -5,7 +5,7 @@ import checkNewPosts from './utilities/checkNewPosts.js';
 
 export default (i18nextInstance) => {
   const initialState = {
-    processState: 'filling',
+    processState: 'waiting',
     form: {
       valid: true,
       state: null,
@@ -16,6 +16,7 @@ export default (i18nextInstance) => {
       redArea: false,
     },
     AllRSS: [],
+    AllPosts: [],
     currentElement: '',
     i18n: i18nextInstance,
   };
@@ -28,8 +29,11 @@ export default (i18nextInstance) => {
     const checkAndUpdate = () => {
       checkNewPosts(initialState)
         .then((newPosts) => {
-          console.log(newPosts);
-          initialState.AllRSS = newPosts;
+          watchedState.AllPosts.unshift(newPosts);
+          // console.log(initialState.AllPosts.flat());
+          console.log(initialState.processState);
+          watchedState.processState = 'update';
+          watchedState.processState = 'waiting';
           setTimeout(checkAndUpdate, 5000);
         })
         .catch((error) => {

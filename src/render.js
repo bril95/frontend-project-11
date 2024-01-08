@@ -21,6 +21,8 @@ export default (watchedState, links) => {
       })
       .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
+        watchedState.AllPosts.push(currentParsenedUrl.items);
+        watchedState.AllPosts.flat();
         const linksA = document.querySelectorAll('li > a');
         linksA.forEach((link) => {
           link.addEventListener('click', () => {
