@@ -1,6 +1,6 @@
 import {
   addNewRSSPosts, viewingPost, createHeader,
-} from './utilities/makeElements.js';
+} from './makeElements.js';
 
 const initView = (watchedState, path, current) => {
   const inputUrl = document.querySelector('#url-input');

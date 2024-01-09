@@ -1,4 +1,4 @@
-import parsing from "./parsing.js";
+import parsing from "./utilities/parsing.js";
 
 const compareElem = (prev, curr) => {
   const allNewPosts = [];

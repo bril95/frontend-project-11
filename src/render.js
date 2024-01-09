@@ -1,7 +1,7 @@
-import validate from './utilities/validate.js';
+import validate from './validate.js';
 import parsing from './utilities/parsing.js';
 import findObject from './utilities/findObj.js';
-import checkNewPosts from './utilities/checkNewPosts.js';
+import checkNewPosts from './checkNewPosts.js';
 
 export default (watchedState, links) => {
   const form = document.querySelector('form');
