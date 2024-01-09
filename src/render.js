@@ -69,7 +69,6 @@ export default (watchedState, links) => {
           });
           checkNewPosts(watchedState)
             .then((newPosts) => {
-              // console.log(watchedState.openedPosts)
               if (newPosts.length !== 0) {
                 watchedState.AllPosts.unshift(newPosts);
                 watchedState.processState = 'update';

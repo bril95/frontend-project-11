@@ -1,4 +1,4 @@
-const createHead = (title, watchedState) => {
+const createHeader = (title, watchedState) => {
   const card = document.createElement('div');
   card.classList.add('card', 'border-0');
   const cardBody = document.createElement('div');
@@ -12,21 +12,6 @@ const createHead = (title, watchedState) => {
   card.append(cardBody);
   card.append(ul);
   return card;
-};
-
-const addNewRSSFeed = (rss) => {
-  const feeds = document.querySelector('.feeds');
-  const ul = feeds.querySelector('ul');
-  const li = document.createElement('li');
-  li.classList.add('list-group-item', 'border-0', 'border-end-0');
-  const h3 = document.createElement('h3');
-  h3.classList.add('h6', 'm-0');
-  h3.textContent = rss.title;
-  const p = document.createElement('p');
-  p.classList.add('small', 'm-0', 'text-black-50');
-  p.textContent = rss.description;
-  li.append(h3, p);
-  ul.append(li);
 };
 
 const addNewRSSPosts = (rss, watchedState) => {
@@ -100,13 +85,6 @@ const viewingPost = (watchedState, path) => {
   }
 };
 
-const viewingLink = (watchedState) => {
-  const id = watchedState.currentElement.itemId;
-  const currentLi = document.querySelector(`a[data-id="${id}"]`);
-  currentLi.classList.add('link-secondary');
-  currentLi.classList.remove('fw-bold');
-};
-
 export {
-  createHead, addNewRSSFeed, addNewRSSPosts, viewingPost, viewingLink,
+  createHeader, addNewRSSPosts, viewingPost,
 };
