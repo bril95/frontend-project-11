@@ -5,7 +5,7 @@ const parsing = (link) => {
   const promise = new Promise((resolve, reject) => {
     axios({
       method: 'get',
-      url: `//allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
+      url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
     })
       .then((response) => {
         if (response.status === 200) {
