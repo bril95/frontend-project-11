@@ -1,6 +1,6 @@
 import onChange from 'on-change';
 import initView from './view.js';
-import render from './render.js';
+import controllers from './controllers.js';
 
 export default (i18nextInstance) => {
   const initialState = {
@@ -22,5 +22,5 @@ export default (i18nextInstance) => {
     initView(watchedState, path, current, i18nextInstance);
   });
 
-  render(watchedState);
+  controllers(watchedState);
 };
