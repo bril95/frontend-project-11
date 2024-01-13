@@ -19,7 +19,7 @@ const initView = (watchedState, path, current, i18n) => {
       }
       feedback.classList.remove('text-danger');
       feedback.classList.add('text-success');
-      feedback.textContent = i18n.t(watchedState.form.state);
+      feedback.textContent = i18n.t('addedLink');
       if (posts.childElementCount === 0) {
         posts.append(createHeader('posts', i18n));
         feeds.append(createHeader('feeds', i18n));
@@ -64,7 +64,7 @@ const initView = (watchedState, path, current, i18n) => {
       }
       feedback.classList.add('text-danger');
       inputUrl.classList.add('is-invalid');
-      feedback.textContent = i18n.t(watchedState.form.state);
+      feedback.textContent = i18n.t(watchedState.form.error);
       break;
     default:
       throw new Error(`Unknown process state: ${watchedState.processState}`);

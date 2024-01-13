@@ -15,11 +15,7 @@ export default (watchedState) => {
         watchedState.links.push(currentParsenedUrl.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
-        watchedState.form.state = 'correctLink';
         watchedState.form.valid = true;
-        return currentParsenedUrl;
-      })
-      .then((currentParsenedUrl) => {
         watchedState.AllRSS.push(currentParsenedUrl);
         watchedState.AllPosts.push(currentParsenedUrl.items);
         watchedState.AllPosts.flat();
@@ -85,7 +81,7 @@ export default (watchedState) => {
       .then(() => form.reset())
       .catch((errors) => {
         watchedState.processState = 'error';
-        watchedState.form.state = errors.message;
+        watchedState.form.error = errors.message;
         watchedState.form.valid = false;
       });
   });

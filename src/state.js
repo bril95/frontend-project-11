@@ -7,9 +7,7 @@ export default (i18nextInstance) => {
     processState: 'waiting',
     form: {
       valid: true,
-      state: null,
-      url: '',
-      alert: false,
+      error: null,
     },
     AllRSS: [],
     AllPosts: [],

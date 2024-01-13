@@ -2,7 +2,7 @@ export default {
   translation: {
     doubleAdd: 'RSS уже существует',
     wrongLink: 'Ссылка должна быть валидным URL',
-    correctLink: 'RSS успешно загружен',
+    addedLink: 'RSS успешно загружен',
     noValid: 'Ресурс не содержит валидный RSS',
     networkError: 'Ошибка сети',
     feeds: 'Фиды',
