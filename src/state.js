@@ -11,21 +11,16 @@ export default (i18nextInstance) => {
       url: '',
       alert: false,
     },
-    fieldUi: {
-      redArea: false,
-    },
     AllRSS: [],
     AllPosts: [],
     openedPosts: [],
     currentElement: '',
-    i18n: i18nextInstance,
+    links: [],
   };
 
-  const links = [];
-
   const watchedState = onChange(initialState, (path, current) => {
-    initView(watchedState, path, current);
+    initView(watchedState, path, current, i18nextInstance);
   });
 
-  render(watchedState, links);
+  render(watchedState);
 };

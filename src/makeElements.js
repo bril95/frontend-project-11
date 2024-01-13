@@ -1,11 +1,11 @@
-const createHeader = (title, watchedState) => {
+const createHeader = (title, i18n) => {
   const card = document.createElement('div');
   card.classList.add('card', 'border-0');
   const cardBody = document.createElement('div');
   cardBody.classList.add('card-body');
   const h2 = document.createElement('h2');
   h2.classList.add('card-title', 'h4');
-  h2.textContent = watchedState.i18n.t(title);
+  h2.textContent = i18n.t(title);
   cardBody.append(h2);
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
@@ -14,7 +14,7 @@ const createHeader = (title, watchedState) => {
   return card;
 };
 
-const addNewRSSPosts = (rss, watchedState) => {
+const addNewRSSPosts = (rss, watchedState, i18n) => {
   const posts = document.querySelector('.posts');
   const ul = posts.querySelector('ul');
   rss.forEach((item) => {
@@ -37,7 +37,7 @@ const addNewRSSPosts = (rss, watchedState) => {
     button.setAttribute('data-id', item.itemId);
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#modal');
-    button.textContent = watchedState.i18n.t('buttonView');
+    button.textContent = i18n.t('buttonView');
     li.appendChild(a);
     li.appendChild(button);
     ul.appendChild(li);
