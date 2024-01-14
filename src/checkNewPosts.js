@@ -1,4 +1,4 @@
-import parsing from './parsing.js';
+import getContent from './getContent.js';
 
 const compareElem = (prev, curr) => {
   const allNewPosts = [];
@@ -18,7 +18,7 @@ const compareElem = (prev, curr) => {
 export default (initialState) => {
   const promises = initialState.AllRSS.map((element) => {
     const currentLink = element.link;
-    return parsing(currentLink)
+    return getContent(currentLink)
       .then((currParsObj) => {
         const compare = compareElem(initialState.AllPosts, currParsObj.items)
           .then((allNewPosts) => allNewPosts);
