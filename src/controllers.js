@@ -69,10 +69,11 @@ export default (watchedState) => {
                 watchedState.processState = 'update';
                 watchedState.processState = 'waiting';
               }
-              setTimeout(checkAndUpdate, 5000);
             })
             .catch((error) => {
               console.error(error);
+            })
+            .finally(() => {
               setTimeout(checkAndUpdate, 5000);
             });
         };
