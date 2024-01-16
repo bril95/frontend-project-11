@@ -4,22 +4,20 @@ import findObject from './utilities/findObj.js';
 import checkNewPosts from './checkNewPosts.js';
 
 const eventHandlers = (watchedState) => {
-  const linksA = document.querySelectorAll('li > a');
-  linksA.forEach((link) => {
-    link.addEventListener('click', () => {
-      const currentID = link.dataset.id;
+  document.addEventListener('click', (e) => {
+    if (e.target.dataset.id !== undefined) {
+      const currentID = e.target.dataset.id;
       watchedState.openedPosts.push(currentID);
       const currentInfo = findObject(watchedState.AllPosts, currentID);
       watchedState.currentElement = currentInfo;
       watchedState.processState = 'openLink';
-    });
+    }
   });
 
-  const buttons = document.querySelectorAll('.btn-sm');
-  buttons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
-      const currentID = button.dataset.id;
+  document.addEventListener('click', (e) => {
+    if (e.target.dataset.bsTarget !== undefined) {
+      e.preventDefault();
+      const currentID = e.target.dataset.id;
       watchedState.openedPosts.push(currentID);
       const currentInfo = findObject(watchedState.AllPosts, currentID);
       watchedState.processState = 'openPost';
@@ -29,16 +27,15 @@ const eventHandlers = (watchedState) => {
       if (modal) {
         modal.focus();
       }
-    });
+    }
   });
 
-  const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
-  closeButtons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      event.preventDefault();
+  document.addEventListener('click', (e) => {
+    if (e.target.dataset.bsDismiss !== undefined) {
+      e.preventDefault();
       watchedState.processState = 'closePost';
       watchedState.form.alert = false;
-    });
+    }
   });
 
   document.addEventListener('keydown', (event) => {
