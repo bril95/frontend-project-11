@@ -1,8 +1,12 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import { fileURLToPath } from 'url';
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const config = {
   mode: 'development',
   entry: path.resolve(__dirname, './src/index.js'),
   output: {
@@ -12,11 +16,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, ('./index.html')),
+      template: path.resolve(__dirname, './index.html'),
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
-    })],
+    }),
+  ],
   module: {
     rules: [
       {
@@ -46,3 +51,5 @@ module.exports = {
     open: true,
   },
 };
+
+export default config;
