@@ -65,7 +65,7 @@ const checkAndUpdate = (watchedState) => {
     });
 };
 
-export default (watchedState) => {
+const controllers = (watchedState) => {
   const form = document.querySelector('form');
 
   form.addEventListener('submit', (e) => {
@@ -85,9 +85,6 @@ export default (watchedState) => {
         watchedState.AllPosts.push(currentParsenedUrl.items);
         watchedState.AllPosts.flat();
       })
-      .then(() => {
-        eventHandlers(watchedState);
-      })
       .then(() => form.reset())
       .catch((error) => {
         watchedState.processState = 'error';
@@ -95,5 +92,10 @@ export default (watchedState) => {
         watchedState.form.valid = false;
       });
   });
+};
+
+export default (watchedState) => {
+  controllers(watchedState);
+  eventHandlers(watchedState);
   checkAndUpdate(watchedState);
 };
