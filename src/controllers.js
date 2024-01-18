@@ -47,8 +47,6 @@ const eventHandlers = (watchedState) => {
 };
 
 const checkAndUpdate = (watchedState) => {
-  eventHandlers(watchedState);
-
   checkNewPosts(watchedState)
     .then((newPosts) => {
       if (newPosts.length !== 0) {
@@ -96,9 +94,6 @@ export default (watchedState) => {
         watchedState.form.error = error.message;
         watchedState.form.valid = false;
       });
-
-    checkAndUpdate(watchedState);
   });
-
   checkAndUpdate(watchedState);
 };
