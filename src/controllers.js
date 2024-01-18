@@ -65,7 +65,7 @@ const checkAndUpdate = (watchedState) => {
     });
 };
 
-const controllers = (watchedState) => {
+const rendering = (watchedState) => {
   const form = document.querySelector('form');
 
   form.addEventListener('submit', (e) => {
@@ -95,7 +95,7 @@ const controllers = (watchedState) => {
 };
 
 export default (watchedState) => {
-  controllers(watchedState);
+  rendering(watchedState);
   eventHandlers(watchedState);
   checkAndUpdate(watchedState);
 };
