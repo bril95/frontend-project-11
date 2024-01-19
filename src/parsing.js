@@ -3,7 +3,7 @@ export default (data) => {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
   const parseError = xmlDoc.querySelector('parsererror');
-  if (!parseError) {
+  if (parseError) {
     return ('noValid');
   }
   const titleElement = xmlDoc.querySelector('channel title');
