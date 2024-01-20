@@ -4,7 +4,7 @@ export default (data) => {
   const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
   const parseError = xmlDoc.querySelector('parsererror');
   if (parseError) {
-    return ('noValid');
+    throw new Error('noValid');
   }
   const titleElement = xmlDoc.querySelector('channel title');
   const title = titleElement.textContent;
