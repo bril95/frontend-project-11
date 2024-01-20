@@ -9,7 +9,7 @@ const getContent = (link) => axios({
   .then((response) => {
     if (response.status === 200) {
       return response.data;
-    } throw new Error('networkError');
+    } throw new Error();
   })
   .then((data) => parsing(data))
   .then((result) => {
@@ -20,6 +20,10 @@ const getContent = (link) => axios({
     });
     return result;
   })
-  .catch((error) => Promise.reject(error));
+  .catch((error) => {
+    if (error.message === 'noValid') {
+      throw new Error('noValid');
+    } throw new Error('networkError');
+  });
 
 export default getContent;
