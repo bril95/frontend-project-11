@@ -77,8 +77,8 @@ const rendering = (watchedState) => {
 
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
-      .then((parsedData) => addId(parsedData))
       .then((parsedData) => {
+        addId(parsedData);
         watchedState.links.push(parsedData.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
