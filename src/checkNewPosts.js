@@ -1,4 +1,5 @@
 import getContent from './getContent.js';
+import addId from './utilities/addId.js';
 
 const compareElem = (prev, curr) => {
   const allNewPosts = [];
@@ -19,6 +20,7 @@ export default (initialState) => {
   const promises = initialState.AllRSS.map((element) => {
     const currentLink = element.link;
     return getContent(currentLink)
+      .then((currParsObj) => addId(currParsObj))
       .then((currParsObj) => {
         const compare = compareElem(initialState.AllPosts, currParsObj.items)
           .then((allNewPosts) => allNewPosts);

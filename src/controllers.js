@@ -1,8 +1,8 @@
-import _ from 'lodash';
 import validate from './validate.js';
 import getContent from './getContent.js';
 import findObject from './utilities/findObj.js';
 import checkNewPosts from './checkNewPosts.js';
+import addId from './utilities/addId.js';
 
 const eventHandlers = (watchedState) => {
   document.addEventListener('click', (e) => {
@@ -77,19 +77,14 @@ const rendering = (watchedState) => {
 
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
-      .then((currentParsenedUrl) => {
-        currentParsenedUrl.items.map((item) => {
-          if (!(_.has(item, 'itemId'))) {
-            item.itemId = _.uniqueId();
-          }
-          return item;
-        });
-        watchedState.links.push(currentParsenedUrl.link);
+      .then((parsedData) => addId(parsedData))
+      .then((parsedData) => {
+        watchedState.links.push(parsedData.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
         watchedState.form.valid = true;
-        watchedState.AllRSS.push(currentParsenedUrl);
-        watchedState.AllPosts.push(currentParsenedUrl.items);
+        watchedState.AllRSS.push(parsedData);
+        watchedState.AllPosts.push(parsedData.items);
         watchedState.AllPosts.flat();
       })
       .then(() => form.reset())
