@@ -77,16 +77,13 @@ const rendering = (watchedState) => {
 
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
-      .then((result) => {
-        result.items.map((item) => {
+      .then((currentParsenedUrl) => {
+        currentParsenedUrl.items.map((item) => {
           if (!(_.has(item, 'itemId'))) {
             item.itemId = _.uniqueId();
           }
           return item;
         });
-        return result;
-      })
-      .then((currentParsenedUrl) => {
         watchedState.links.push(currentParsenedUrl.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
