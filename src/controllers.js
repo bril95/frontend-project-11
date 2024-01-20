@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import validate from './validate.js';
 import getContent from './getContent.js';
 import findObject from './utilities/findObj.js';
@@ -76,6 +77,15 @@ const rendering = (watchedState) => {
 
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
+      .then((result) => {
+        result.items.map((item) => {
+          if (!(_.has(item, 'itemId'))) {
+            item.itemId = _.uniqueId();
+          }
+          return item;
+        });
+        return result;
+      })
       .then((currentParsenedUrl) => {
         watchedState.links.push(currentParsenedUrl.link);
         watchedState.processState = 'addedLink';

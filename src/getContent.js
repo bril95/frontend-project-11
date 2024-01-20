@@ -1,5 +1,4 @@
 import axios from 'axios';
-import _ from 'lodash';
 import parsing from './parsing.js';
 
 const getContent = (link) => axios({
@@ -12,14 +11,6 @@ const getContent = (link) => axios({
     } throw new Error();
   })
   .then((data) => parsing(data))
-  .then((result) => {
-    result.items.forEach((item) => {
-      if (!(_.has(item, 'itemId'))) {
-        item.itemId = _.uniqueId();
-      }
-    });
-    return result;
-  })
   .catch((error) => {
     if (error.message === 'noValid') {
       throw new Error('noValid');
