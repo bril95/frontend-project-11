@@ -1,8 +1,58 @@
+import axios from 'axios';
 import validate from './validate.js';
-import getContent from './getContent.js';
 import findObject from './utilities/findObj.js';
-import checkNewPosts from './checkNewPosts.js';
 import addId from './utilities/addId.js';
+import parsing from './parsing.js';
+
+const getContent = (link) => axios({
+  method: 'get',
+  url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
+})
+  .then((response) => {
+    if (response.status) {
+      return response.data;
+    } throw new Error();
+  })
+  .then((data) => parsing(data))
+  .catch((error) => {
+    if (error.message === 'noValid') {
+      throw new Error('noValid');
+    } throw new Error('networkError');
+  });
+
+const compareElem = (prev, curr) => {
+  const allNewPosts = [];
+  const allTitles = prev.flat().map((obj) => obj.itemTitle);
+  const promises = curr.map((elem) => {
+    const prom = new Promise((resolve) => {
+      if (!allTitles.includes(elem.itemTitle)) {
+        allNewPosts.push(elem);
+      }
+      resolve();
+    });
+    return prom;
+  });
+  return Promise.all(promises).then(() => allNewPosts);
+};
+
+const checkNewPosts = (watchedState) => {
+  const promises = watchedState.AllRSS.map((element) => {
+    const currentLink = element.link;
+    return getContent(currentLink)
+      .then((currParsObj) => addId(currParsObj))
+      .then((currParsObj) => {
+        const compare = compareElem(watchedState.AllPosts, currParsObj.items)
+          .then((allNewPosts) => allNewPosts);
+        return compare;
+      })
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+  });
+
+  return Promise.all(promises).then((allNewPostsArray) => allNewPostsArray.flat());
+};
 
 const eventHandlers = (watchedState) => {
   document.addEventListener('click', (e) => {
@@ -77,8 +127,8 @@ const rendering = (watchedState) => {
 
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
+      .then((parsedData) => addId(parsedData))
       .then((parsedData) => {
-        addId(parsedData);
         watchedState.links.push(parsedData.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
