@@ -8,11 +8,7 @@ const getContent = (link) => axios({
   method: 'get',
   url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
 })
-  .then((response) => {
-    if (response.status) {
-      return response.data;
-    } throw new Error();
-  })
+  .then((response) => response.data)
   .then((data) => parsing(data))
   .catch((error) => {
     if (error.message === 'noValid') {
@@ -38,7 +34,12 @@ const compareElem = (prev, curr) => {
 const checkNewPosts = (watchedState) => {
   const promises = watchedState.AllRSS.map((element) => {
     const currentLink = element.link;
-    return getContent(currentLink)
+    return axios({
+      method: 'get',
+      url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(currentLink)}`,
+    })
+      .then((response) => response.data)
+      .then((data) => parsing(data))
       .then((currParsObj) => addId(currParsObj))
       .then((currParsObj) => {
         const compare = compareElem(watchedState.AllPosts, currParsObj.items)
@@ -50,7 +51,6 @@ const checkNewPosts = (watchedState) => {
         return [];
       });
   });
-
   return Promise.all(promises).then((allNewPostsArray) => allNewPostsArray.flat());
 };
 
