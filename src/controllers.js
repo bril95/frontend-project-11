@@ -20,13 +20,10 @@ const compareElem = (prev, curr) => {
   const allNewPosts = [];
   const allTitles = prev.flat().map((obj) => obj.itemTitle);
   const promises = curr.map((elem) => {
-    const prom = new Promise((resolve) => {
-      if (!allTitles.includes(elem.itemTitle)) {
-        allNewPosts.push(elem);
-      }
-      resolve();
-    });
-    return prom;
+    if (!allTitles.includes(elem.itemTitle)) {
+      allNewPosts.push(elem);
+    }
+    return allNewPosts;
   });
   return Promise.all(promises).then(() => allNewPosts);
 };
@@ -39,8 +36,10 @@ const checkNewPosts = (watchedState) => {
       url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(currentLink)}`,
     })
       .then((response) => response.data)
-      .then((data) => parsing(data))
-      .then((currParsObj) => addId(currParsObj))
+      .then((data) => {
+        const parsData = parsing(data);
+        return addId(parsData);
+      })
       .then((currParsObj) => {
         const compare = compareElem(watchedState.AllPosts, currParsObj.items)
           .then((allNewPosts) => allNewPosts);
@@ -55,22 +54,17 @@ const checkNewPosts = (watchedState) => {
 };
 
 const eventHandlers = (watchedState) => {
-  document.addEventListener('click', (e) => {
+  const containerPost = document.querySelector('.container-xxl');
+  containerPost.addEventListener('click', (e) => {
+    const currentID = e.target.dataset.id;
+    watchedState.openedPosts.push(currentID);
+    const currentInfo = findObject(watchedState.AllPosts, currentID);
     if (e.target.dataset.id !== undefined) {
-      const currentID = e.target.dataset.id;
-      watchedState.openedPosts.push(currentID);
-      const currentInfo = findObject(watchedState.AllPosts, currentID);
       watchedState.currentElement = currentInfo;
       watchedState.processState = 'openLink';
     }
-  });
-
-  document.addEventListener('click', (e) => {
     if (e.target.dataset.bsTarget !== undefined) {
       e.preventDefault();
-      const currentID = e.target.dataset.id;
-      watchedState.openedPosts.push(currentID);
-      const currentInfo = findObject(watchedState.AllPosts, currentID);
       watchedState.processState = 'openPost';
       watchedState.currentElement = currentInfo;
       watchedState.form.alert = true;
