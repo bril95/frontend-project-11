@@ -9,6 +9,8 @@ const elements = {
   feeds: document.querySelector('.feeds'),
   body: document.querySelector('body'),
   containerPost: document.querySelector('.container-xxl'),
+  form: document.querySelector('form'),
+  button: document.querySelector('.btn-lg'),
   modalWindow: {
     modal: document.querySelector('.modal'),
     modalTitle: document.querySelector('.modal-title'),

@@ -42,9 +42,6 @@ const eventHandlers = (watchedState, elements) => {
       watchedState.currentElement = currentInfo;
       watchedState.form.alert = true;
       watchedState.processState = 'waiting';
-      if (elements.modal) {
-        elements.modal.focus();
-      }
     }
   });
 };
@@ -86,10 +83,10 @@ const checkNewPosts = (watchedState) => {
     });
 };
 
-const rendering = (watchedState) => {
-  const form = document.querySelector('form');
-  form.addEventListener('submit', (e) => {
+const rendering = (watchedState, elements) => {
+  elements.form.addEventListener('submit', (e) => {
     e.preventDefault();
+    elements.button.setAttribute('disabled', true);
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url');
     validate(currentUrl, watchedState.links)
@@ -103,18 +100,20 @@ const rendering = (watchedState) => {
         watchedState.AllRSS.push(parsedData);
         watchedState.AllPosts.push(parsedData.items);
         watchedState.AllPosts.flat();
-        form.reset();
       })
       .catch((error) => {
         watchedState.processState = 'error';
         watchedState.form.error = error.message;
         watchedState.form.valid = false;
       });
+    elements.button.removeAttribute('disabled');
+    elements.form.reset();
+    elements.inputUrl.focus();
   });
 };
 
 export default (watchedState, elements) => {
-  rendering(watchedState);
+  rendering(watchedState, elements);
   eventHandlers(watchedState, elements);
   checkNewPosts(watchedState);
 };
