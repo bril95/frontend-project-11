@@ -1,6 +1,4 @@
-import {
-  addNewRSSPosts, viewingPost, createHeader,
-} from './makeElements.js';
+import { addNewRSSPosts, createHeader } from './makeElements.js';
 
 const initView = (watchedState, path, current, i18n, elements) => {
   const ulPosts = elements.posts.querySelector('ul');
@@ -36,11 +34,18 @@ const initView = (watchedState, path, current, i18n, elements) => {
       }
       break;
     case 'openPost': {
-      viewingPost(watchedState, path, elements);
-      break;
-    }
-    case 'closePost': {
-      viewingPost(watchedState, path, elements);
+      const id = watchedState.currentElement.itemId;
+      const currentLi = document.querySelector(`a[data-id="${id}"]`);
+      if (path === 'form.alert') {
+        if (elements.body.classList.contains('modal-open')) {
+          currentLi.classList.remove('fw-bold');
+          currentLi.classList.add('fw-normal');
+          currentLi.classList.add('link-secondary');
+          elements.modalWindow.modalTitle.textContent = watchedState.currentElement.itemTitle;
+          elements.modalWindow.modalBody.textContent = watchedState.currentElement.itemDescription;
+          elements.modalWindow.modalFooterHref.href = watchedState.currentElement.itemLink;
+        }
+      }
       break;
     }
     case 'openLink': {

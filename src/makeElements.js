@@ -43,42 +43,4 @@ const addNewRSSPosts = (rss, watchedState, i18n, elements) => {
   });
 };
 
-const viewingPost = (watchedState, path, elements) => {
-  const id = watchedState.currentElement.itemId;
-  const currentLi = document.querySelector(`a[data-id="${id}"]`);
-  if (path === 'form.alert') {
-    if (!elements.body.classList.contains('modal-open')) {
-      const div = document.createElement('div');
-      div.classList.add('modal-backdrop', 'fade', 'show');
-      elements.body.append(div);
-      elements.body.classList.add('modal-open');
-      elements.body.style.overflow = 'hidden';
-      elements.body.style.paddingRight = '15px';
-      elements.modalWindow.modal.classList.add('show');
-      elements.modalWindow.modal.style.display = 'block';
-      elements.modalWindow.modal.setAttribute('aria-modal', 'true');
-      elements.modalWindow.modal.removeAttribute('aria-hidden');
-      elements.modalWindow.modal.setAttribute('role', 'dialog');
-      currentLi.classList.remove('fw-bold');
-      currentLi.classList.add('fw-normal');
-      currentLi.classList.add('link-secondary');
-      elements.modalWindow.modalTitle.textContent = watchedState.currentElement.itemTitle;
-      elements.modalWindow.modalBody.textContent = watchedState.currentElement.itemDescription;
-      elements.modalWindow.modalFooterHref.href = watchedState.currentElement.itemLink;
-    } else {
-      const div = elements.body.querySelector('.modal-backdrop');
-      div.remove();
-      elements.body.classList.remove('modal-open');
-      elements.body.style = '';
-      elements.modalWindow.modal.classList.remove('show');
-      elements.modalWindow.modal.style.display = 'none';
-      elements.modalWindow.modal.setAttribute('aria-hidden', 'true');
-      elements.modalWindow.modal.removeAttribute('aria-modal');
-      elements.modalWindow.modal.removeAttribute('role');
-    }
-  }
-};
-
-export {
-  createHeader, addNewRSSPosts, viewingPost,
-};
+export { createHeader, addNewRSSPosts };

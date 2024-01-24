@@ -41,25 +41,10 @@ const eventHandlers = (watchedState, elements) => {
       watchedState.processState = 'openPost';
       watchedState.currentElement = currentInfo;
       watchedState.form.alert = true;
-      const modal = document.getElementById('modal');
-      if (modal) {
-        modal.focus();
+      watchedState.processState = 'waiting';
+      if (elements.modal) {
+        elements.modal.focus();
       }
-    }
-  });
-
-  document.addEventListener('click', (e) => {
-    if (e.target.dataset.bsDismiss !== undefined) {
-      e.preventDefault();
-      watchedState.processState = 'closePost';
-      watchedState.form.alert = false;
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-      watchedState.processState = 'closePost';
-      watchedState.form.alert = false;
     }
   });
 };
