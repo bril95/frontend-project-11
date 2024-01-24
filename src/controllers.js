@@ -19,43 +19,16 @@ const getContent = (link) => axios({
 const compareElem = (prev, curr) => {
   const allNewPosts = [];
   const allTitles = prev.flat().map((obj) => obj.itemTitle);
-  const promises = curr.map((elem) => {
+  curr.forEach((elem) => {
     if (!allTitles.includes(elem.itemTitle)) {
       allNewPosts.push(elem);
     }
-    return allNewPosts;
   });
-  return Promise.all(promises).then(() => allNewPosts);
+  return allNewPosts;
 };
 
-const checkNewPosts = (watchedState) => {
-  const promises = watchedState.AllRSS.map((element) => {
-    const currentLink = element.link;
-    return axios({
-      method: 'get',
-      url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(currentLink)}`,
-    })
-      .then((response) => response.data)
-      .then((data) => {
-        const parsData = parsing(data);
-        return addId(parsData);
-      })
-      .then((currParsObj) => {
-        const compare = compareElem(watchedState.AllPosts, currParsObj.items)
-          .then((allNewPosts) => allNewPosts);
-        return compare;
-      })
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
-  });
-  return Promise.all(promises).then((allNewPostsArray) => allNewPostsArray.flat());
-};
-
-const eventHandlers = (watchedState) => {
-  const containerPost = document.querySelector('.container-xxl');
-  containerPost.addEventListener('click', (e) => {
+const eventHandlers = (watchedState, elements) => {
+  elements.containerPost.addEventListener('click', (e) => {
     const currentID = e.target.dataset.id;
     watchedState.openedPosts.push(currentID);
     const currentInfo = findObject(watchedState.AllPosts, currentID);
@@ -91,8 +64,26 @@ const eventHandlers = (watchedState) => {
   });
 };
 
-const checkAndUpdate = (watchedState) => {
-  checkNewPosts(watchedState)
+const checkNewPosts = (watchedState) => {
+  const promises = watchedState.AllRSS.map((element) => {
+    const currentLink = element.link;
+    return axios({
+      method: 'get',
+      url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(currentLink)}`,
+    })
+      .then((response) => response.data)
+      .then((data) => {
+        const parsData = parsing(data);
+        return addId(parsData);
+      })
+      .then((currParsObj) => compareElem(watchedState.AllPosts, currParsObj.items))
+      .catch((error) => {
+        console.error(error);
+        return [];
+      });
+  });
+  return Promise.all(promises)
+    .then((allNewPostsArray) => allNewPostsArray.flat())
     .then((newPosts) => {
       if (newPosts.length !== 0) {
         watchedState.AllPosts.unshift(newPosts);
@@ -106,19 +97,16 @@ const checkAndUpdate = (watchedState) => {
       watchedState.form.valid = false;
     })
     .finally(() => {
-      setTimeout(() => checkAndUpdate(watchedState), 5000);
+      setTimeout(() => checkNewPosts(watchedState), 5000);
     });
 };
 
 const rendering = (watchedState) => {
   const form = document.querySelector('form');
-
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.target);
     const currentUrl = formData.get('url');
-
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
       .then((parsedData) => addId(parsedData))
@@ -130,8 +118,8 @@ const rendering = (watchedState) => {
         watchedState.AllRSS.push(parsedData);
         watchedState.AllPosts.push(parsedData.items);
         watchedState.AllPosts.flat();
+        form.reset();
       })
-      .then(() => form.reset())
       .catch((error) => {
         watchedState.processState = 'error';
         watchedState.form.error = error.message;
@@ -140,8 +128,8 @@ const rendering = (watchedState) => {
   });
 };
 
-export default (watchedState) => {
+export default (watchedState, elements) => {
   rendering(watchedState);
-  eventHandlers(watchedState);
-  checkAndUpdate(watchedState);
+  eventHandlers(watchedState, elements);
+  checkNewPosts(watchedState);
 };

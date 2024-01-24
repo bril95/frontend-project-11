@@ -2,27 +2,23 @@ import {
   addNewRSSPosts, viewingPost, createHeader,
 } from './makeElements.js';
 
-const initView = (watchedState, path, current, i18n) => {
-  const inputUrl = document.querySelector('#url-input');
-  const feedback = document.querySelector('.feedback');
-  const posts = document.querySelector('.posts');
-  const feeds = document.querySelector('.feeds');
-  const ulPosts = posts.querySelector('ul');
+const initView = (watchedState, path, current, i18n, elements) => {
+  const ulPosts = elements.posts.querySelector('ul');
   const allPost = watchedState.AllPosts.flat();
-  const ulFeeds = feeds.querySelector('ul');
+  const ulFeeds = elements.feeds.querySelector('ul');
   switch (watchedState.processState) {
     case 'waiting':
       break;
     case 'addedLink':
-      if (inputUrl.classList.contains('is-invalid')) {
-        inputUrl.classList.remove('is-invalid');
+      if (elements.inputUrl.classList.contains('is-invalid')) {
+        elements.inputUrl.classList.remove('is-invalid');
       }
-      feedback.classList.remove('text-danger');
-      feedback.classList.add('text-success');
-      feedback.textContent = i18n.t('addedLink');
-      if (posts.childElementCount === 0) {
-        posts.append(createHeader('posts', i18n));
-        feeds.append(createHeader('feeds', i18n));
+      elements.feedback.classList.remove('text-danger');
+      elements.feedback.classList.add('text-success');
+      elements.feedback.textContent = i18n.t('addedLink');
+      if (elements.posts.childElementCount === 0) {
+        elements.posts.append(createHeader('posts', i18n));
+        elements.feeds.append(createHeader('feeds', i18n));
       }
       if (path === 'AllRSS') {
         const lastAddRss = current[current.length - 1];
@@ -36,15 +32,15 @@ const initView = (watchedState, path, current, i18n) => {
         p.textContent = lastAddRss.description;
         li.append(h3, p);
         ulFeeds.append(li);
-        addNewRSSPosts(lastAddRss.items, watchedState, i18n);
+        addNewRSSPosts(lastAddRss.items, watchedState, i18n, elements);
       }
       break;
     case 'openPost': {
-      viewingPost(watchedState, path);
+      viewingPost(watchedState, path, elements);
       break;
     }
     case 'closePost': {
-      viewingPost(watchedState, path);
+      viewingPost(watchedState, path, elements);
       break;
     }
     case 'openLink': {
@@ -56,15 +52,15 @@ const initView = (watchedState, path, current, i18n) => {
     }
     case 'update':
       ulPosts.textContent = '';
-      addNewRSSPosts(allPost, watchedState, i18n);
+      addNewRSSPosts(allPost, watchedState, i18n, elements);
       break;
     case 'error':
-      if (inputUrl.classList.contains('text-success')) {
-        inputUrl.classList.remove('text-success');
+      if (elements.inputUrl.classList.contains('text-success')) {
+        elements.inputUrl.classList.remove('text-success');
       }
-      feedback.classList.add('text-danger');
-      inputUrl.classList.add('is-invalid');
-      feedback.textContent = i18n.t(watchedState.form.error);
+      elements.feedback.classList.add('text-danger');
+      elements.inputUrl.classList.add('is-invalid');
+      elements.feedback.textContent = i18n.t(watchedState.form.error);
       break;
     default:
       throw new Error(`Unknown process state: ${watchedState.processState}`);
