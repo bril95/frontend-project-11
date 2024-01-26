@@ -1,14 +1,10 @@
-import axios from 'axios';
 import validate from './validate.js';
 import findObject from './utilities/findObj.js';
 import addId from './utilities/addId.js';
 import parsing from './parsing.js';
+import getResponse from './getResponse.js';
 
-const getContent = (link) => axios({
-  method: 'get',
-  url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(link)}`,
-})
-  .then((response) => response.data)
+const getContent = (link) => getResponse(link)
   .then((data) => parsing(data))
   .catch((error) => {
     if (error.message === 'noValid') {
@@ -49,16 +45,12 @@ const eventHandlers = (watchedState, elements) => {
 const checkNewPosts = (watchedState) => {
   const promises = watchedState.AllRSS.map((element) => {
     const currentLink = element.link;
-    return axios({
-      method: 'get',
-      url: `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(currentLink)}`,
-    })
-      .then((response) => response.data)
+    return getResponse(currentLink)
       .then((data) => {
         const parsData = parsing(data);
-        return addId(parsData);
+        const currParsObj = addId(parsData);
+        return compareElem(watchedState.AllPosts, currParsObj.items);
       })
-      .then((currParsObj) => compareElem(watchedState.AllPosts, currParsObj.items))
       .catch((error) => {
         console.error(error);
         return [];
