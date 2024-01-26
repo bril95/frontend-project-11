@@ -2,11 +2,12 @@ import validate from './validate.js';
 import findObject from './utilities/findObj.js';
 import addId from './utilities/addId.js';
 import parsing from './parsing.js';
-import getResponse from './getResponse.js';
+import getResponse from './utilities/getResponse.js';
 
 const timeout = 5000;
 
 const getContent = (link) => getResponse(link)
+  .then((response) => response.data)
   .then((data) => parsing(data))
   .catch((error) => {
     if (error.message === 'noValid') {
@@ -70,6 +71,7 @@ const checkNewPosts = (watchedState) => {
   const promises = watchedState.AllRSS.map((element) => {
     const currentLink = element.link;
     return getResponse(currentLink)
+      .then((response) => response.data)
       .then((data) => {
         const parsData = parsing(data);
         const currParsObj = addId(parsData);
