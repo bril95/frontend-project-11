@@ -43,4 +43,50 @@ const addNewRSSPosts = (rss, watchedState, i18n, elements) => {
   });
 };
 
-export { createHeader, addNewRSSPosts };
+const openPost = (watchedState, elements) => {
+  const id = watchedState.currentElement.itemId;
+  const currentLi = document.querySelector(`a[data-id="${id}"]`);
+  if (elements.body.classList.contains('modal-open')) {
+    currentLi.classList.remove('fw-bold');
+    currentLi.classList.add('fw-normal');
+    currentLi.classList.add('link-secondary');
+    elements.modalWindow.modalTitle.textContent = watchedState.currentElement.itemTitle;
+    elements.modalWindow.modalBody.textContent = watchedState.currentElement.itemDescription;
+    elements.modalWindow.modalFooterHref.href = watchedState.currentElement.itemLink;
+  }
+};
+
+const addLink = (watchedState, path, current, i18n, elements) => {
+  const ulFeeds = elements.feeds.querySelector('ul');
+  if (elements.inputUrl.classList.contains('is-invalid')) {
+    elements.inputUrl.classList.remove('is-invalid');
+  }
+  elements.feedback.classList.remove('text-danger');
+  elements.feedback.classList.add('text-success');
+  elements.feedback.textContent = i18n.t('addedLink');
+  if (elements.posts.childElementCount === 0) {
+    elements.posts.append(createHeader('posts', i18n));
+    elements.feeds.append(createHeader('feeds', i18n));
+  }
+  if (path === 'AllRSS') {
+    const lastAddRss = current[current.length - 1];
+    const li = document.createElement('li');
+    li.classList.add('list-group-item', 'border-0', 'border-end-0');
+    const h3 = document.createElement('h3');
+    h3.classList.add('h6', 'm-0');
+    h3.textContent = lastAddRss.title;
+    const p = document.createElement('p');
+    p.classList.add('small', 'm-0', 'text-black-50');
+    p.textContent = lastAddRss.description;
+    li.append(h3, p);
+    ulFeeds.append(li);
+    addNewRSSPosts(lastAddRss.items, watchedState, i18n, elements);
+  }
+  elements.button.removeAttribute('disabled');
+  elements.form.reset();
+  elements.inputUrl.focus();
+};
+
+export {
+  addNewRSSPosts, addLink, openPost,
+};
