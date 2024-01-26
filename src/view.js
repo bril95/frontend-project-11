@@ -34,6 +34,7 @@ const initView = (watchedState, path, current, i18n, elements) => {
       elements.feedback.classList.add('text-danger');
       elements.inputUrl.classList.add('is-invalid');
       elements.feedback.textContent = i18n.t(watchedState.form.error);
+      elements.button.removeAttribute('disabled');
       break;
     default:
       throw new Error(`Unknown process state: ${watchedState.processState}`);

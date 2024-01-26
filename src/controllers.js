@@ -41,7 +41,6 @@ const eventHandlers = (watchedState, elements) => {
         watchedState.form.valid = true;
         watchedState.AllRSS.push(parsedData);
         watchedState.AllPosts.push(parsedData.items);
-        watchedState.AllPosts.flat();
       })
       .catch((error) => {
         watchedState.processState = 'error';
@@ -76,21 +75,16 @@ const checkNewPosts = (watchedState) => {
         const currParsObj = addId(parsData);
         return compareElem(watchedState.AllPosts, currParsObj.items);
       })
-      .catch((error) => {
-        console.error(error);
-        return [];
-      });
+      .then((newPosts) => {
+        if (newPosts.length !== 0) {
+          watchedState.AllPosts.unshift(newPosts);
+          watchedState.processState = 'update';
+          watchedState.processState = 'waiting';
+        }
+      })
+      .catch((error) => console.error(error));
   });
   return Promise.all(promises)
-    .then((allNewPostsArray) => allNewPostsArray.flat())
-    .then((newPosts) => {
-      if (newPosts.length !== 0) {
-        watchedState.AllPosts.unshift(newPosts);
-        watchedState.processState = 'update';
-        watchedState.processState = 'waiting';
-      }
-    })
-    .catch((error) => console.error(error))
     .finally(() => {
       setTimeout(() => checkNewPosts(watchedState), timeout);
     });
@@ -98,5 +92,5 @@ const checkNewPosts = (watchedState) => {
 
 export default (watchedState, elements) => {
   eventHandlers(watchedState, elements);
-  checkNewPosts(watchedState);
+  setTimeout(() => checkNewPosts(watchedState), timeout);
 };
