@@ -4,6 +4,8 @@ import addId from './utilities/addId.js';
 import parsing from './parsing.js';
 import getResponse from './getResponse.js';
 
+const timeout = 5000;
+
 const getContent = (link) => getResponse(link)
   .then((data) => parsing(data))
   .catch((error) => {
@@ -24,6 +26,29 @@ const compareElem = (prev, curr) => {
 };
 
 const eventHandlers = (watchedState, elements) => {
+  elements.form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    watchedState.processState = 'response';
+    const formData = new FormData(e.target);
+    const currentUrl = formData.get('url');
+    validate(currentUrl, watchedState.links)
+      .then((url) => getContent(url))
+      .then((parsedData) => addId(parsedData))
+      .then((parsedData) => {
+        watchedState.links.push(parsedData.link);
+        watchedState.processState = 'addedLink';
+        watchedState.form.url = currentUrl;
+        watchedState.form.valid = true;
+        watchedState.AllRSS.push(parsedData);
+        watchedState.AllPosts.push(parsedData.items);
+        watchedState.AllPosts.flat();
+      })
+      .catch((error) => {
+        watchedState.processState = 'error';
+        watchedState.form.error = error.message;
+        watchedState.form.valid = false;
+      });
+  });
   elements.containerPost.addEventListener('click', (e) => {
     const currentID = e.target.dataset.id;
     watchedState.openedPosts.push(currentID);
@@ -65,47 +90,13 @@ const checkNewPosts = (watchedState) => {
         watchedState.processState = 'waiting';
       }
     })
-    .catch((error) => {
-      watchedState.processState = 'error';
-      watchedState.form.error = error.message;
-      watchedState.form.valid = false;
-    })
+    .catch((error) => console.error(error))
     .finally(() => {
-      setTimeout(() => checkNewPosts(watchedState), 5000);
+      setTimeout(() => checkNewPosts(watchedState), timeout);
     });
 };
 
-const rendering = (watchedState, elements) => {
-  elements.form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    elements.button.setAttribute('disabled', true);
-    const formData = new FormData(e.target);
-    const currentUrl = formData.get('url');
-    validate(currentUrl, watchedState.links)
-      .then((url) => getContent(url))
-      .then((parsedData) => addId(parsedData))
-      .then((parsedData) => {
-        watchedState.links.push(parsedData.link);
-        watchedState.processState = 'addedLink';
-        watchedState.form.url = currentUrl;
-        watchedState.form.valid = true;
-        watchedState.AllRSS.push(parsedData);
-        watchedState.AllPosts.push(parsedData.items);
-        watchedState.AllPosts.flat();
-      })
-      .catch((error) => {
-        watchedState.processState = 'error';
-        watchedState.form.error = error.message;
-        watchedState.form.valid = false;
-      });
-    elements.button.removeAttribute('disabled');
-    elements.form.reset();
-    elements.inputUrl.focus();
-  });
-};
-
 export default (watchedState, elements) => {
-  rendering(watchedState, elements);
   eventHandlers(watchedState, elements);
   checkNewPosts(watchedState);
 };

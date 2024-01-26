@@ -7,6 +7,9 @@ const initView = (watchedState, path, current, i18n, elements) => {
   switch (watchedState.processState) {
     case 'waiting':
       break;
+    case 'response':
+      elements.button.setAttribute('disabled', true);
+      break;
     case 'addedLink':
       if (elements.inputUrl.classList.contains('is-invalid')) {
         elements.inputUrl.classList.remove('is-invalid');
@@ -32,6 +35,9 @@ const initView = (watchedState, path, current, i18n, elements) => {
         ulFeeds.append(li);
         addNewRSSPosts(lastAddRss.items, watchedState, i18n, elements);
       }
+      elements.button.removeAttribute('disabled');
+      elements.form.reset();
+      elements.inputUrl.focus();
       break;
     case 'openPost': {
       const id = watchedState.currentElement.itemId;
