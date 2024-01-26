@@ -34,8 +34,8 @@ const eventHandlers = (watchedState, elements) => {
     const currentUrl = formData.get('url');
     validate(currentUrl, watchedState.links)
       .then((url) => getContent(url))
-      .then((parsedData) => addId(parsedData))
       .then((parsedData) => {
+        addId(parsedData);
         watchedState.links.push(parsedData.link);
         watchedState.processState = 'addedLink';
         watchedState.form.url = currentUrl;
@@ -74,10 +74,8 @@ const checkNewPosts = (watchedState) => {
       .then((response) => response.data)
       .then((data) => {
         const parsData = parsing(data);
-        const currParsObj = addId(parsData);
-        return compareElem(watchedState.AllPosts, currParsObj.items);
-      })
-      .then((newPosts) => {
+        addId(parsData);
+        const newPosts = compareElem(watchedState.AllPosts, parsData.items);
         if (newPosts.length !== 0) {
           watchedState.AllPosts.unshift(newPosts);
           watchedState.processState = 'update';
