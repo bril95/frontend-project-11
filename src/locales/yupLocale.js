@@ -1,4 +1,6 @@
 export default {
-  url: 'wrongLink',
-  notOneOf: 'doubleAdd',
+  string: {
+    url: 'wrongLink',
+    notOneOf: 'doubleAdd',
+  },
 };
