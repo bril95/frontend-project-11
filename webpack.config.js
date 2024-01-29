@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const config = {
-  mode: 'development',
+  mode: process.env.NODE_ENV || 'development',
   entry: path.resolve(__dirname, './src/index.js'),
   output: {
     filename: '[name].[contenthash].js',
