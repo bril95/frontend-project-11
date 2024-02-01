@@ -1,6 +1,8 @@
 export default {
+  mixed: {
+    notOneOf: 'doubleAdd',
+  },
   string: {
     url: 'wrongLink',
-    notOneOf: 'doubleAdd',
   },
 };
