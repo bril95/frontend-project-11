@@ -6,9 +6,8 @@ export default (data) => {
   }
   const title = xmlDoc.querySelector('channel title').textContent;
   const description = xmlDoc.querySelector('description').textContent;
-  const link = data.status.url;
   const parsedResult = {
-    title, description, items: [], link,
+    title, description, items: [],
   };
   const items = xmlDoc.querySelectorAll('item');
   items.forEach((item) => {
