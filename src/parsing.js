@@ -1,7 +1,7 @@
 export default (data) => {
   const xmlDoc = new DOMParser().parseFromString(data.contents, 'text/xml');
-  const parseError = xmlDoc.querySelector('parsererror');
-  if (parseError) {
+  const parseError = xmlDoc.querySelector('rss');
+  if (!parseError) {
     throw new Error('noValid');
   }
   const title = xmlDoc.querySelector('channel title').textContent;
