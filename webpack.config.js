@@ -3,20 +3,20 @@ import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 const config = {
   mode: process.env.NODE_ENV || 'development',
-  entry: path.resolve(__dirname, './src/index.js'),
+  entry: path.resolve(dirname, './src/index.js'),
   output: {
     filename: '[name].[contenthash].js',
-    path: path.resolve(__dirname, './dist/'),
+    path: path.resolve(dirname, './dist/'),
     clean: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './index.html'),
+      template: path.resolve(dirname, './index.html'),
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
