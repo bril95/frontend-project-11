@@ -12,7 +12,9 @@ const getContent = (link) => getResponse(link)
   .catch((error) => {
     if (error.message === 'noValid') {
       throw new Error('noValid');
-    } throw new Error('networkError');
+    } else {
+      throw new Error('networkError');
+    }
   });
 
 const compareElem = (prev, curr) => {
